@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "6e72e312-6b4c-4c61-b066-895723f6eddc",
+		"name": "Webservices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "films",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c549270-e82d-4a59-9a91-d6e4ea715cf6",
+						"exec": [
+							"tests[\"200\"] = responseCode.code === 200",
+							"",
+							"var jsonData = pm.response.json();",
+							"postman.setEnvironmentVariable(\"title1\", jsonData.results[0])",
+							"postman.setEnvironmentVariable(\"title2\", jsonData.results[1])",
+							"postman.setEnvironmentVariable(\"title3\", jsonData.results[2])",
+							"postman.setEnvironmentVariable(\"title4\", jsonData.results[3])",
+							"postman.setEnvironmentVariable(\"title5\", jsonData.results[4])",
+							"postman.setEnvironmentVariable(\"title6\", jsonData.results[5])",
+							"postman.setEnvironmentVariable(\"title7\", jsonData.results[6])",
+							"",
+							"console.log(\"Titulos capturados\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url_films}}",
+					"host": [
+						"{{url_films}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "planets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0c2977ae-981f-4265-879b-413b3c2835ab",
+						"exec": [
+							"tests[\"200\"] = responseCode.code === 200\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"Count_planets\", jsonData.count);\r",
+							"\r",
+							"var countPlanets = postman.setEnvironmentVariable(\"Count_planets\");\r",
+							"console.log(countPlanets)\r",
+							"\r",
+							"var randomMaiorCount = randomCount(countPlanets, 100);\r",
+							"\r",
+							"pm.sendRequest(\"http://swapi.co/api/planets/\" + randomMaiorCount , function (err, response)  {\r",
+							"    \r",
+							"    postman.setEnvironmentVariable(\"resultCode\", response.code);\r",
+							"    postman.setEnvironmentVariable(\"resultStatus\", response.status);\r",
+							"});\r",
+							"\r",
+							"tests[\"Status: 404\"] = postman.setEnvironmentVariable(\"resultCode\") === \"404\"\r",
+							"tests[\"Message: NOT FOUND\"] = postman.setEnvironmentVariable(\"resultStatus\") === \"NOT FOUND\"\r",
+							"\r",
+							"function randomCount(min,max)\r",
+							"{\r",
+							"    return Math.floor(Math.random()*max) +min;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url_planets}}",
+					"host": [
+						"{{url_planets}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
